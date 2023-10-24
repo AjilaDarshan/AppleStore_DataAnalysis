@@ -1,3 +1,5 @@
+![available-on-the-app-store-115501268395mrkpep24t](https://github.com/AjilaDarshan/AppleStore_DataAnalysis/assets/112164248/3acbc873-9d69-4d36-ad63-e694e36032e6)
+
 # Exploring & Data Analysis on Apple Store Dataset
 In this project, I aims to perform data analysis on the dataset obtained from Apple Store to gain insights into the trends and pattern.
 
