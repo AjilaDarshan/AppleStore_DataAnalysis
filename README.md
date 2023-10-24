@@ -1,6 +1,8 @@
 # Exploring & Data Analysis on Apple Store Dataset
 In this project, I aims to perform data analysis on the dataset obtained from Apple Store to gain insights into the trends and pattern.
 
+![available-on-the-app-store-115501268395mrkpep24t](https://github.com/AjilaDarshan/AppleStore_DataAnalysis/assets/112164248/7e192fe0-cbc0-4a09-9f20-9788bf7ef68d)
+
 # Project Objective:
 We try to identify the stakeholder, business developer and personal individuals who has an interested in aspiring app developer who needs data driven insights to decide what type of app to build and so they are seeking answers to questions what kinds so apps they can target in the market.
 
