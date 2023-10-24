@@ -1,0 +1,105 @@
+CREATE TABLE apple_store_description AS
+
+select * from appleStore_description1 
+
+UNION ALL
+
+select * from appleStore_description2
+
+UNION ALL
+
+select * from appleStore_description3
+
+UNION ALL
+
+select * from appleStore_description4
+
+
+-- CHECKING NO. OF APPS IN APPLESTOREAppleStore
+
+SELECT COUNT(DISTINCT ID) AS Total_APPS
+FROM AppleStore
+
+--CHECKING IF THERE IS ANY MISSING VALUES IN APPLESTORE DATASETAppleStore
+
+SELECT COUNT(*) AS MISSING_VALUES
+FROM AppleStore
+WHERE track_name IS NULL OR user_rating IS NULL OR prime_genre IS NULL OR rating_count_tot IS NULL
+
+SELECT COUNT(*) AS MISSING_VALUES
+FROM apple_store_description
+WHERE track_name IS NULL OR app_desc IS NULL
+
+--CHECKING NO. OF APP IN PER GENREAppleStore
+
+SELECT prime_genre, COUNT(*) AS NO_OF_APPS
+FROM AppleStore
+GROUP BY prime_genre
+ORDER BY NO_OF_APPS DESC
+
+--CHECKING APPS GENRE WHICH AS MINIMUN USER RATINGSAppleStore
+
+SELECT MIN(user_rating) AS LOW_RATING,
+	MAX(user_rating) AS HIGH_RATING,
+    AVG(user_rating) AS AVG_RATING
+ FROM AppleStore
+ 
+ --CHECKING WHICH APPS HAVE HIGHER RATINGSAppleStore
+ 
+ SELECT CASE
+ 	WHEN price>0 THEN 'PAID'
+    ELSE 'FREE'
+ END AS APP_TYPE,
+ AVG(user_rating) AS AVG_RATING
+ FROM AppleStore
+ GROUP BY APP_TYPE
+ 
+ --CHECKING IF APPS ARE AVAILABLE IN MORE LANGUAGES HAVE HIGHER RATINGS OR NOT
+ 
+ SELECT CASE
+ WHEN lang_num<10 THEN 'AVAILABLE LESS THAN 10 LANGUAGES'
+ WHEN lang_num BETWEEN 10 AND 30 THEN 'AVAILABLE 10-30 LANGUAGES'
+ ELSE 'AVAILABLE MORE THAN 30 LANGUAGES'
+ END AS NO_OF_LANGUAGES,
+ AVG(user_rating) AS AVG_RATING
+ FROM AppleStore
+ GROUP BY NO_OF_LANGUAGES
+ ORDER BY AVG_RATING ASC
+
+ --CHECKING WHICH GENRE OF APPS HAVE LOWEST USER RATINGS
+ 
+ SELECT prime_genre, AVG(user_rating) AS AVG_RATING
+ FROM AppleStore
+ GROUP BY prime_genre
+ ORDER BY AVG_RATING ASC
+ 
+ --CHECKING IF THERE EXIST ANY CORELATION BETWEEN APP DESCRIPTION AND USER RATINGSAppleStore
+ 
+ SELECT CASE
+ 			WHEN LENGTH(B.app_desc) >500 THEN 'DESCRIPTION IS SHORT'
+            WHEN LENGTH(B.app_desc) BETWEEN 500 AND 1000 THEN 'DESCRIPTION IS MEDIUM'
+            ELSE 'DESCRIPTION IS LONG'
+            END AS DESCRIPTION_OF_APP,
+            AVG(A.user_rating) AS AVG_RATING
+ FROM
+ 	AppleStore AS A
+ 
+ JOIN
+ 	apple_store_description AS B
+ ON 
+ 	A.id = B.id
+ GROUP BY DESCRIPTION_OF_APP
+ ORDER BY AVG_RATING DESC
+ 
+ --CHECKING TOP-RATED APPS FOR EACH GENREAppleStore
+ 
+ SELECT prime_genre, track_name, user_rating
+ 		FROM (
+          SELECT prime_genre, track_name, user_rating,
+          RANK() OVER(PARTITION BY prime_genre ORDER BY user_rating DESC, rating_count_tot DESC) AS RANK
+        FROM AppleStore
+          ) AS A
+ WHERE A.RANK = 1
+ 
+
+
